@@ -1,0 +1,255 @@
+﻿<UserControl x:Class="AJWPFAdmin.Core.Components.AJTable.Views.AJTable"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AJWPFAdmin.Core.Components.AJTable.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:bhv="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:vm="clr-namespace:AJWPFAdmin.Core.Components.AJTable.ViewModels"
+             xmlns:ap="clr-namespace:AJWPFAdmin.Core.AssistProperties"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate  x:Key="S_Input">
+            <TextBox Margin="8 0" md:HintAssist.Hint="{Binding Label}"
+                         Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                        md:TextFieldAssist.HasClearButton="True"
+                         MinWidth="140"
+                         Text="{Binding Value,UpdateSourceTrigger=PropertyChanged}"/>
+        </DataTemplate>
+        <DataTemplate  x:Key="S_Select">
+            <ComboBox ItemsSource="{Binding Options}"
+                      Margin="8 0"
+                      md:HintAssist.Hint="{Binding Placeholder}" 
+                      md:TextFieldAssist.HasClearButton="True"
+                      Style="{DynamicResource MaterialDesignFloatingHintComboBox}"
+                      DisplayMemberPath="Label" MinWidth="140"
+                      SelectedValue="{Binding Value,UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValuePath="Value">
+                
+            </ComboBox>
+        </DataTemplate>
+        <DataTemplate x:Key="S_DateTimePicker">
+            <StackPanel Orientation="Horizontal" Margin="8 0">
+                <DatePicker MinWidth="80" Style="{DynamicResource MaterialDesignFloatingHintDatePicker}"
+                            md:TextFieldAssist.HasClearButton="True"
+                            md:HintAssist.Hint="{Binding Label}" SelectedDate="{Binding Value,UpdateSourceTrigger=PropertyChanged}"/>
+                <md:TimePicker MinWidth="80" 
+                               Style="{DynamicResource MaterialDesignFloatingHintTimePicker}" Is24Hours="True"
+                               md:TextFieldAssist.HasClearButton="True"
+                               md:HintAssist.Hint="选择时间" SelectedTime="{Binding Value,UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="S_RangePicker">
+            <StackPanel Orientation="Horizontal" Margin="8 0">
+                <StackPanel Orientation="Horizontal" Margin="8 0">
+                    <DatePicker MinWidth="80" Style="{DynamicResource MaterialDesignFloatingHintDatePicker}"
+                            md:TextFieldAssist.HasClearButton="True"
+                            md:HintAssist.Hint="{Binding Labels[0]}" SelectedDate="{Binding Value[0],UpdateSourceTrigger=PropertyChanged}"/>
+                    <md:TimePicker MinWidth="80" 
+                               Style="{DynamicResource MaterialDesignFloatingHintTimePicker}" Is24Hours="True"
+                               md:TextFieldAssist.HasClearButton="True"
+                               md:HintAssist.Hint="选择时间" SelectedTime="{Binding Value[0],UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <TextBlock VerticalAlignment="Center" Margin="8 0">~</TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="8 0">
+                    <DatePicker MinWidth="80" Style="{DynamicResource MaterialDesignFloatingHintDatePicker}"
+                            md:TextFieldAssist.HasClearButton="True"
+                            md:HintAssist.Hint="{Binding Labels[1]}" SelectedDate="{Binding Value[1],UpdateSourceTrigger=PropertyChanged}"/>
+                    <md:TimePicker MinWidth="80" 
+                               Style="{DynamicResource MaterialDesignFloatingHintTimePicker}" Is24Hours="True"
+                               md:TextFieldAssist.HasClearButton="True"
+                               md:HintAssist.Hint="选择时间" SelectedTime="{Binding Value[1],UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+            </StackPanel>
+            
+        </DataTemplate>
+    </UserControl.Resources>
+    <md:DrawerHost x:Name="DrawerHst" OpenMode="Modal" 
+                   ClipToBounds="True">
+        <md:DrawerHost.TopDrawerContent>
+            <StackPanel Margin="16">
+                <ItemsControl ItemsSource="{Binding FormConfig.Schemas}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplateSelector>
+                        <vm:AJTableFormSchemaItemTemplateSelector 
+                            Input="{StaticResource S_Input}"
+                            Select="{StaticResource S_Select}"
+                            DateTimePicker="{StaticResource S_DateTimePicker}"
+                            RangePicker="{StaticResource S_RangePicker}"/>
+                    </ItemsControl.ItemTemplateSelector>
+                </ItemsControl>
+                <StackPanel Orientation="Horizontal" Margin="12" HorizontalAlignment="Center">
+                    <Button Margin="8 0" Click="SearchButton_Click" CommandParameter="False">搜索</Button>
+                    <Button Margin="8 0" Click="SearchButton_Click" CommandParameter="True">重置</Button>
+                </StackPanel>
+            </StackPanel>
+            
+        </md:DrawerHost.TopDrawerContent>
+        <md:DialogHost x:Name="Dg_ExportGress" IsOpen="{Binding ExportProgress.Loading}"  
+                       Identifier="Dg_ExportGress">
+            <md:DialogHost.DialogContent>
+                <Grid Margin="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <md:PackIcon Kind="FileDownloadOutline" Foreground="{DynamicResource PrimaryHueMidBrush}"
+                 Height="64" Width="64"></md:PackIcon>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8" MinWidth="240">
+                        <TextBlock Margin="0 8" FontSize="16" Text="{Binding ExportProgress.Text}"></TextBlock>
+                        <ProgressBar Height="12" Value="{Binding ExportProgress.Current}" Maximum="{Binding ExportProgress.Total}"/>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost.DialogContent>
+            <md:DialogHost x:Name="DgHst" OverlayBackground="Transparent" ClipToBounds="False">
+                <md:DialogHost.DialogContent>
+                    <Border Margin="16">
+                        <ProgressBar Height="32" Width="32" HorizontalAlignment="Center" IsIndeterminate="True"
+                     Style="{StaticResource MaterialDesignCircularProgressBar}"
+                     Value="0" md:ElevationAssist.Elevation="Dp2"/>
+                    </Border>
+
+                </md:DialogHost.DialogContent>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="64"/>
+                    </Grid.RowDefinitions>
+                    <Grid Margin="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <ItemsControl ItemsSource="{Binding FormConfig.PopularSchemas}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplateSelector>
+                                <vm:AJTableFormSchemaItemTemplateSelector 
+                    Input="{StaticResource S_Input}"
+                    Select="{StaticResource S_Select}"
+                    DateTimePicker="{StaticResource S_DateTimePicker}"
+                    RangePicker="{StaticResource S_RangePicker}"/>
+                            </ItemsControl.ItemTemplateSelector>
+                        </ItemsControl>
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                            <Button Style="{DynamicResource MaterialDesignIconButton}" ToolTip="搜索" Click="SearchButton_Click" CommandParameter="False">
+                                <md:PackIcon Kind="Magnify"/>
+                            </Button>
+                            <Button Style="{DynamicResource MaterialDesignIconButton}" ToolTip="重置" Click="SearchButton_Click" CommandParameter="True">
+                                <md:PackIcon Kind="Refresh"/>
+                            </Button>
+                            <Button Style="{DynamicResource MaterialDesignIconButton}" ToolTip="高级" Click="AdvFilterButton_Click"
+                        Visibility="{Binding FormConfig.AdvFilterVisibility}">
+                                <md:PackIcon Kind="FilterSettingsOutline"/>
+                            </Button>
+                            <Button Style="{DynamicResource MaterialDesignIconButton}" 
+                    ToolTip="导出"
+                    Click="ExportButton_Click"
+                    Visibility="{Binding FormConfig.ExportVisibility}">
+                                <md:PackIcon Kind="FileDownloadOutline"/>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                    <DataGrid x:Name="DG_Table"
+                  Margin="8"
+            Grid.Row="1"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            FrozenColumnCount="1"
+            HeadersVisibility="Column"
+            IsReadOnly="True"
+            SelectionUnit="FullRow"
+            md:DataGridAssist.SelectedCellBorderBrush="Transparent"
+                  LoadingRow="DG_Table_LoadingRow">
+                        <!--<DataGrid.ColumnHeaderStyle>
+    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+    </Style>
+</DataGrid.ColumnHeaderStyle>-->
+
+                    </DataGrid>
+                    <StackPanel  Orientation="Horizontal" Margin="8" Grid.Row="2"
+                VerticalAlignment="Center" HorizontalAlignment="{Binding Pagination.Alignment}">
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="共" Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"></TextBlock>
+                            <TextBlock Text="{Binding Pagination.Total}" Margin="8 0"
+                               Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"></TextBlock>
+                            <TextBlock Text="条"
+                               Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"></TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8 0">
+                            <Button Style="{DynamicResource MaterialDesignIconButton}" ToolTip="上一页" 
+                    Click="PrevOrNextPage_Clicked"
+                    IsEnabled="{Binding Pagination.CanPrevPage}">
+                                <md:PackIcon Kind="ChevronLeft"></md:PackIcon>
+                            </Button>
+                            <ItemsControl Margin="8 0" ItemsSource="{Binding Pagination.PageItems}" VerticalAlignment="Center">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton Style="{DynamicResource MaterialDesignFlatToggleButton}" 
+                                      Margin="4 0" Content="{Binding PageNumber}"
+                                      IsChecked="{Binding Checked}"
+                                      Checked="PageItem_Checked"
+                                      ToolTip="{Binding ToolTip}">
+                                        </ToggleButton>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button Style="{DynamicResource MaterialDesignIconButton}" ToolTip="下一页"
+                    Click="PrevOrNextPage_Clicked"
+                    IsEnabled="{Binding Pagination.CanNextPage}">
+                                <md:PackIcon Kind="ChevronRight"></md:PackIcon>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="8 0" VerticalAlignment="Center">
+                            <ComboBox  Width="100" 
+                       ItemsSource="{Binding Pagination.PageSizeOptions}" 
+                       SelectedItem="{Binding Pagination.PageSize}"
+                       md:HintAssist.Hint="每页条数"
+                       SelectionChanged="PageOption_SelectionChanged">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" Margin="0 0 8 0" 
+                                               DockPanel.Dock="Left" 
+                                               Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"></TextBlock>
+                                            <TextBlock Text="条/页" DockPanel.Dock="Right"
+                                               Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="8 0" VerticalAlignment="Center">
+                            <TextBlock Style="{DynamicResource MaterialDesignSubtitle1TextBlock}">跳至</TextBlock>
+                            <TextBox Width="80" TextAlignment="Center" ap:TextFieldAssist.OnlyNumber="True" KeyDown="JumpToPage_KeyDown"/>
+                            <TextBlock Style="{DynamicResource MaterialDesignSubtitle1TextBlock}">页</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </md:DialogHost>
+        </md:DialogHost>
+        
+    </md:DrawerHost>
+    
+</UserControl>

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AJWPFAdmin.Core\AJWPFAdmin.Core.csproj" />
+    <ProjectReference Include="..\..\Services\AJWPFAdmin.Services\AJWPFAdmin.Services.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="EntranceGuardManager.Modules.Main.Views.PassagewayForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EntranceGuardManager.Modules.Main.Views"
+             xmlns:sysWind="clr-namespace:System.Windows;assembly=PresentationCore" 
+             mc:Ignorable="d" 
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:converter="clr-namespace:AJWPFAdmin.Core.Converters;assembly=AJWPFAdmin.Core"
+             Language="zh-CN"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+       
+        <converter:BooleanInvertConverter x:Key="BooleanInvert"/>
+        <converter:BooleanMapConverter x:Key="toggleText" TrueValue="统计" FalseValue="不统计"/>
+        <converter:BooleanMapConverter x:Key="warehouseDropdonwVisivle" TrueValue="{x:Static Visibility.Visible}" FalseValue="{x:Static Visibility.Collapsed}"/>
+    </UserControl.Resources>
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="mde:MaterialWindow">
+            <Setter Property="Title" Value="{Binding DialogTitle}"/>
+        </Style>
+    </prism:Dialog.WindowStyle>
+    <md:DialogHost Identifier="dialogWindow">
+        <Grid Margin="8 16">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="480">
+
+                <ComboBox ItemsSource="{Binding WatchHouseOptions}"
+          Margin="8 18" FontSize="18"
+          md:HintAssist.Hint="所属岗亭" 
+          md:ComboBoxAssist.ShowSelectedItem="True"
+          IsEditable="True"
+          DisplayMemberPath="Label"
+          Style="{DynamicResource MaterialDesignOutlinedComboBox}"
+          SelectedValue="{Binding WatchhouseId,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"></ComboBox>
+
+                <TextBox md:HintAssist.Hint="名称" Margin="8 16" FontSize="16"
+         MaxLength="50"
+     Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+     Text="{Binding Name}"></TextBox>
+
+                <TextBox md:HintAssist.Hint="编号" Margin="8 16" FontSize="16"
+     Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+     Text="{Binding Code}"></TextBox>
+
+                <ComboBox ItemsSource="{Binding DirectionOptions}"
+Margin="8 18" FontSize="18"
+md:HintAssist.Hint="方向" 
+md:ComboBoxAssist.ShowSelectedItem="True"
+DisplayMemberPath="Key"
+                          SelectedValuePath="Value"
+Style="{DynamicResource MaterialDesignOutlinedComboBox}"
+SelectedValue="{Binding Direction,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"></ComboBox>
+
+                <DockPanel Margin="8 16">
+                    <TextBlock Text="统计车辆" VerticalAlignment="Center" DockPanel.Dock="Left"></TextBlock>
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Right">
+                        
+                        <ToggleButton DockPanel.Dock="Right"
+             Style="{StaticResource MaterialDesignSwitchToggleButton}"
+             Width="60" 
+             md:ToggleButtonAssist.SwitchTrackOnBackground="{DynamicResource PrimaryHueDarkBrush}"
+             md:ToggleButtonAssist.SwitchTrackOffBackground="{DynamicResource AJGrey}"
+             IsChecked="{Binding CountCarEnable}">
+                        </ToggleButton>
+                        <TextBlock VerticalAlignment="Center" Margin="8 0"
+Text="{Binding CountCarEnable,Converter={StaticResource toggleText}}"></TextBlock>
+                    </StackPanel>
+                    
+                </DockPanel>
+
+                <ComboBox ItemsSource="{Binding WarehouseOptions}"
+Margin="8 18" FontSize="18"
+md:HintAssist.Hint="关联仓库" 
+md:ComboBoxAssist.ShowSelectedItem="True"
+IsEditable="True"
+DisplayMemberPath="Label"
+                          Visibility="{Binding CountCarEnable, Converter={StaticResource warehouseDropdonwVisivle}}"
+Style="{DynamicResource MaterialDesignOutlinedComboBox}"
+SelectedValue="{Binding WarehouseId,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"></ComboBox>
+
+                <TextBox md:HintAssist.Hint="设备网关" 
+                         md:HintAssist.HelperText="如 192.168.1.1  或 http://www.a.com/abc"
+                         Margin="8 16" FontSize="16"
+Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+Text="{Binding DeviceGateway}"></TextBox>
+
+                <TextBox md:HintAssist.Hint="备注" Margin="8 16" FontSize="16"
+Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+Text="{Binding Remark}"></TextBox>
+
+                <Button Margin="0 16" Command="{Binding SaveCmd}"
+                        md:ButtonProgressAssist.IsIndeterminate="{Binding Loading}"
+                        md:ButtonProgressAssist.IsIndicatorVisible="True"
+                        md:ButtonProgressAssist.Value="-1"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        IsEnabled="{Binding Loading,Converter={StaticResource BooleanInvert}}" 
+                        Content="保 存"></Button>
+            </StackPanel>
+        </Grid>
+    </md:DialogHost>
+</UserControl>

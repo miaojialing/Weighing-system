@@ -1,0 +1,211 @@
+﻿<UserControl
+    x:Class="AJWPFAdmin.Modules.Main.Views.DeviceScreen"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ajcore="clr-namespace:AJWPFAdmin.Core;assembly=AJWPFAdmin.Core"
+    xmlns:bhv="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:converter="clr-namespace:AJWPFAdmin.Core.Converters;assembly=AJWPFAdmin.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AJWPFAdmin.Modules.Main.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:vm="clr-namespace:AJWPFAdmin.Modules.Main.ViewModels"
+    d:Background="White"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="carIdentificationCameraDevice">
+            <md:Card
+                Width="{Binding RenderWidth}"
+                Height="{Binding RenderHeight}"
+                Margin="4"
+                md:ElevationAssist.Elevation="Dp4">
+                <bhv:Interaction.Triggers>
+                    <bhv:EventTrigger EventName="MouseEnter">
+                        <prism:InvokeCommandAction Command="{Binding OnMouseEnterCmd}" />
+                    </bhv:EventTrigger>
+                    <bhv:EventTrigger EventName="MouseLeave">
+                        <prism:InvokeCommandAction Command="{Binding OnMouseLeaveCmd}" />
+                    </bhv:EventTrigger>
+                </bhv:Interaction.Triggers>
+                <md:DrawerHost
+                    BottomDrawerBackground="#80000000"
+                    IsBottomDrawerOpen="{Binding MouseHover, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    IsTopDrawerOpen="{Binding MouseHover, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    TopDrawerBackground="#80000000">
+                    <md:DrawerHost.TopDrawerContent>
+                        <StackPanel Margin="8" Orientation="Horizontal">
+                            <TextBlock
+                                FontSize="16"
+                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                Text="{Binding WatchhouseName}" />
+                            <TextBlock
+                                Margin="4,0"
+                                FontSize="16"
+                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                Text="&gt;" />
+                            <TextBlock
+                                FontSize="16"
+                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                Text="{Binding PassagewayName}" />
+                            <TextBlock
+                                Margin="4,0"
+                                FontSize="16"
+                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                Text="&gt;" />
+                            <TextBlock
+                                FontSize="16"
+                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                Text="{Binding Code}" />
+                        </StackPanel>
+                    </md:DrawerHost.TopDrawerContent>
+                    <md:DrawerHost.BottomDrawerContent>
+                        <StackPanel
+                            Grid.Row="1"
+                            Margin="8"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                            <Button Command="{Binding ToggleSwitchCmd}">
+                                开闸
+                            </Button>
+                            <Button Margin="16,0" Command="{Binding ToggleSwitchCmd}">
+                                关闸
+                            </Button>
+                        </StackPanel>
+                    </md:DrawerHost.BottomDrawerContent>
+
+                    <Image Stretch="UniformToFill">
+                        <bhv:Interaction.Triggers>
+                            <bhv:EventTrigger EventName="Loaded">
+                                <prism:InvokeCommandAction Command="{Binding DeviceControlLoadCmd}" TriggerParameterPath="Source" />
+                            </bhv:EventTrigger>
+                        </bhv:Interaction.Triggers>
+
+                    </Image>
+
+                </md:DrawerHost>
+
+            </md:Card>
+        </DataTemplate>
+        <DataTemplate x:Key="cctvCameraDevice" />
+        <DataTemplate x:Key="readerDevice">
+            <md:Card
+                Width="{Binding RenderWidth}"
+                Height="{Binding RenderHeight}"
+                Margin="4"
+                md:ElevationAssist.Elevation="Dp4">
+                <bhv:Interaction.Triggers>
+                    <bhv:EventTrigger EventName="MouseEnter">
+                        <prism:InvokeCommandAction Command="{Binding OnMouseEnterCmd}" />
+                    </bhv:EventTrigger>
+                    <bhv:EventTrigger EventName="MouseLeave">
+                        <prism:InvokeCommandAction Command="{Binding OnMouseLeaveCmd}" />
+                    </bhv:EventTrigger>
+                </bhv:Interaction.Triggers>
+                <md:DrawerHost
+                    BottomDrawerBackground="#80000000"
+                    IsBottomDrawerOpen="{Binding MouseHover, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    IsTopDrawerOpen="{Binding MouseHover, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    TopDrawerBackground="#80000000">
+                    <md:DrawerHost.TopDrawerContent>
+                        <StackPanel Margin="8" Orientation="Horizontal">
+                            <TextBlock
+                                FontSize="16"
+                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                Text="{Binding WatchhouseName}" />
+                            <TextBlock
+                                Margin="4,0"
+                                FontSize="16"
+                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                Text="&gt;" />
+                            <TextBlock
+                                FontSize="16"
+                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                Text="{Binding PassagewayName}" />
+                            <TextBlock
+                                Margin="4,0"
+                                FontSize="16"
+                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                Text="&gt;" />
+                            <TextBlock
+                                FontSize="16"
+                                Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                Text="{Binding Code}" />
+                        </StackPanel>
+                    </md:DrawerHost.TopDrawerContent>
+                    <md:DrawerHost.BottomDrawerContent>
+                        <StackPanel
+                            Grid.Row="1"
+                            Margin="8"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                Text="{Binding StatusText}" />
+                        </StackPanel>
+                    </md:DrawerHost.BottomDrawerContent>
+
+                    <Image Stretch="UniformToFill">
+                        <bhv:Interaction.Triggers>
+                            <bhv:EventTrigger EventName="Loaded">
+                                <prism:InvokeCommandAction Command="{Binding DeviceControlLoadCmd}" TriggerParameterPath="Source" />
+                            </bhv:EventTrigger>
+                            <bhv:EventTrigger EventName="Unloaded">
+                                <prism:InvokeCommandAction Command="{Binding DeviceControlUnloadedCmd}" TriggerParameterPath="Source" />
+                            </bhv:EventTrigger>
+                        </bhv:Interaction.Triggers>
+
+                    </Image>
+
+                </md:DrawerHost>
+
+            </md:Card>
+        </DataTemplate>
+
+        <DataTemplate x:Key="none" />
+
+    </UserControl.Resources>
+    <Grid>
+        <ItemsControl ItemsSource="{Binding DeviceList, Mode=TwoWay}">
+            <bhv:Interaction.Triggers>
+                <bhv:EventTrigger EventName="Loaded">
+                    <prism:InvokeCommandAction Command="{Binding CameraContainerLoadCmd}" TriggerParameterPath="Source" />
+                </bhv:EventTrigger>
+            </bhv:Interaction.Triggers>
+            <ItemsControl.ItemTemplateSelector>
+                <vm:DeviceTemplateSelector
+                    CCTVCamera="{StaticResource cctvCameraDevice}"
+                    CarIdentificationCamera="{StaticResource carIdentificationCameraDevice}"
+                    None="{StaticResource none}"
+                    Reader="{StaticResource readerDevice}" />
+            </ItemsControl.ItemTemplateSelector>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="{Binding EmptyInfoVisibility}">
+            <md:PackIcon
+                Width="64"
+                Height="64"
+                HorizontalAlignment="Center"
+                Foreground="{StaticResource AJRed}"
+                Kind="CloseNetworkOutline" />
+            <TextBlock
+                Margin="12"
+                HorizontalAlignment="Center"
+                FontSize="18"
+                Foreground="{StaticResource AJRed}"
+                Text="暂无任何设备" />
+        </StackPanel>
+    </Grid>
+
+</UserControl>

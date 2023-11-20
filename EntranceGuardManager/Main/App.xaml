@@ -1,0 +1,67 @@
+﻿<prism:PrismApplication
+    x:Class="EntranceGuardManager.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:EntranceGuardManager"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:prism="http://prismlibrary.com/">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <!--  material design styles  -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignLightTheme.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignDarkTheme.xaml" />
+
+                <!--  primary colors  -->
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Blue.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                    <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#99d1ff" />
+                    <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource Primary900Foreground}" />
+                    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#40a9ff" />
+                    <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource Primary600Foreground}" />
+                    <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#1890ff" />
+                    <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource Primary500Foreground}" />
+                    <SolidColorBrush x:Key="AJTableAlternatingRowBackground" Color="#e6f7ff" />
+
+                    <SolidColorBrush x:Key="AJYellow" Color="#fbbd08" />
+                    <SolidColorBrush x:Key="AJOrange" Color="#f37b1d" />
+                    <SolidColorBrush x:Key="AJRed" Color="#e54d42" />
+                    <SolidColorBrush x:Key="AJPink" Color="#e03997" />
+                    <SolidColorBrush x:Key="AJMauve" Color="#b745cb" />
+                    <SolidColorBrush x:Key="AJPurple" Color="#8044de" />
+                    <SolidColorBrush x:Key="AJCyan" Color="#37c0fe" />
+                    <SolidColorBrush x:Key="AJGreen" Color="#3eb93b" />
+                    <SolidColorBrush x:Key="AJOlive" Color="#8dc63f" />
+                    <SolidColorBrush x:Key="AJGrey" Color="#8799a3" />
+                    <SolidColorBrush x:Key="AJBrown" Color="#a5673f" />
+
+                </ResourceDictionary>
+
+                <!--  accent color  -->
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Lime.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                    <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="{StaticResource Accent400}" />
+                    <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="{StaticResource Accent400Foreground}" />
+                </ResourceDictionary>
+
+                <!--<ResourceDictionary>
+            <SolidColorBrush x:Key="MaterialDesignBackground" Color="{Binding Color, Source={StaticResource MaterialDesignPaper}}" />
+        </ResourceDictionary>-->
+
+                <ResourceDictionary>
+                    <Style BasedOn="{StaticResource MaterialDesignScrollViewer}" TargetType="ScrollViewer">
+                        <Setter Property="md:ScrollViewerAssist.IgnorePadding" Value="False" />
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</prism:PrismApplication>

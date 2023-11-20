@@ -1,0 +1,220 @@
+﻿<UserControl
+    x:Class="AJWPFAdmin.Modules.Main.Views.CarIdentificationPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ajcore="clr-namespace:AJWPFAdmin.Core;assembly=AJWPFAdmin.Core"
+    xmlns:bhv="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:converter="clr-namespace:AJWPFAdmin.Core.Converters;assembly=AJWPFAdmin.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AJWPFAdmin.Modules.Main.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:prism="http://prismlibrary.com/"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+    <bhv:Interaction.Triggers>
+        <bhv:EventTrigger EventName="Loaded">
+            <prism:InvokeCommandAction Command="{Binding ControlLoadedCmd}" TriggerParameterPath="Source" />
+        </bhv:EventTrigger>
+    </bhv:Interaction.Triggers>
+    <UserControl.Resources>
+        <converter:DefaultValueFormatConverter x:Key="defaultCvt" />
+        <converter:BooleanInvertConverter x:Key="BooleanInvert" />
+        <converter:BooleanMapConverter
+            x:Key="connectionColorCvt"
+            FalseValue="{StaticResource AJRed}"
+            TrueValue="{StaticResource AJGreen}" />
+        <converter:BooleanMapConverter
+            x:Key="connectionTextCvt"
+            FalseValue="实时通讯已断开"
+            TrueValue="实时通讯已连接" />
+        <converter:BooleanMapConverter
+            x:Key="connectionIconCvt"
+            FalseValue="LanDisconnect"
+            TrueValue="LanConnect" />
+        <Style x:Key="flexPanel" TargetType="DockPanel">
+            <Setter Property="Margin" Value="0,4" />
+        </Style>
+        <Style x:Key="grayLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#999" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style x:Key="fontBoldLabel" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+    </UserControl.Resources>
+
+    <md:Card md:ElevationAssist.Elevation="Dp4" Background="White">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="6*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <StackPanel
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <md:PackIcon Foreground="{Binding AJMQTTConnected, Converter={StaticResource connectionColorCvt}}" Kind="{Binding AJMQTTConnected, Converter={StaticResource connectionIconCvt}}" />
+                <TextBlock
+                    Margin="4,0"
+                    Foreground="{Binding AJMQTTConnected, Converter={StaticResource connectionColorCvt}}"
+                    Text="{Binding AJMQTTConnected, Converter={StaticResource connectionTextCvt}}" />
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <StackPanel Margin="8">
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="车辆类型" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.TypeName, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="时间" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.CreateDate, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="状态" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.Direction, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="门岗" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.WatchhouseName, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="通道" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.PassagewayName, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                </StackPanel>
+                <Border
+                    Height="1"
+                    BorderBrush="{StaticResource AJBg}"
+                    BorderThickness="0.5" />
+                <StackPanel Margin="8">
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="发动机号" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.EngineNo, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="VIN" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.VIN, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="排放阶段" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.PaiFangJieDuan, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="注册日期" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.RegDate, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                </StackPanel>
+                <Border
+                    Height="1"
+                    BorderBrush="{StaticResource AJBg}"
+                    BorderThickness="0.5" />
+
+                <StackPanel Margin="8">
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="车队名称" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.TeamName, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="货物" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.MaterialName, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource flexPanel}">
+                        <TextBlock Style="{StaticResource grayLabel}" Text="重量" />
+                        <TextBlock
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource fontBoldLabel}"
+                            Text="{Binding CurRecord.CarNetWeight, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                    </DockPanel>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
+                <StackPanel
+                    Margin="12,4"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Text="待处理车辆：" />
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Text="{Binding CurRecord.CarNo, Converter={StaticResource defaultCvt}, ConverterParameter=--}" />
+                </StackPanel>
+
+                <StackPanel
+                    Margin="0,4"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock Foreground="{StaticResource AJRed}" Text="待处理数量：" />
+                    <TextBlock Foreground="{StaticResource AJRed}" Text="{Binding QueueCount}" />
+                </StackPanel>
+
+                <Grid Margin="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="6*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Margin="8,0"
+                        Command="{Binding PassCmd}"
+                        CommandParameter="Pass"
+                        IsEnabled="{Binding Saving, Converter={StaticResource BooleanInvert}}">
+                        准许通行
+                    </Button>
+
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding PassCmd}"
+                        CommandParameter="Ignore"
+                        IsEnabled="{Binding Saving, Converter={StaticResource BooleanInvert}}"
+                        Style="{DynamicResource MaterialDesignFlatDarkButton}">
+                        忽略
+                    </Button>
+                </Grid>
+
+            </StackPanel>
+        </Grid>
+
+    </md:Card>
+</UserControl>

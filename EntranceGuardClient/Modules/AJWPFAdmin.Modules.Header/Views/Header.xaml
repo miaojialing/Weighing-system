@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Employee.Modules.Header.Views.Header"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Employee.Modules.Header.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="1000" d:Background="White"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:bhv="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:converts="clr-namespace:Employee.Core.Converters;assembly=Employee.Core"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True" >
+    <UserControl.Resources>
+        <converts:DefaultImageConverter x:Key="DefaultImage"/>
+    </UserControl.Resources>
+    <Grid>
+        <md:ColorZone Mode="PrimaryMid" VerticalAlignment="Stretch">
+            <DockPanel>
+                <md:PopupBox  DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges"  PopupHorizontalOffset="-12">
+                    <ListBox>
+                        <ListBoxItem Content="Hello World" />
+                        <ListBoxItem Content="Nice Popup" />
+                        <ListBoxItem Content="Goodbye" />
+                    </ListBox>
+                </md:PopupBox>
+                <md:Chip DockPanel.Dock="Right" Foreground="White"
+                         Content="{Binding CurrentUser.NickName}" >
+                    <md:Chip.Icon>
+                        <Image Source="{Binding CurrentUser.Avatar,Converter={StaticResource DefaultImage},ConverterParameter=/images/logo.jpg}" />
+                    </md:Chip.Icon>
+                </md:Chip>
+                <md:Badged DockPanel.Dock="Right" VerticalAlignment="Center" Margin="22 0" Badge="3" BadgeBackground="OrangeRed" BadgeForeground="White">
+                    <Button Style="{DynamicResource MaterialDesignIconButton}" Foreground="White" Height="26" Width="26">
+                        <md:PackIcon Kind="BellOutline"></md:PackIcon>
+                    </Button>
+                </md:Badged>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}" 
+                                  Command="{Binding ToggleMenu}" IsChecked="True"/>
+                    <TextBlock Margin="16,0,0,0" VerticalAlignment="Center" Text="{Binding MenuName}" />
+                </StackPanel>
+            </DockPanel>
+        </md:ColorZone>
+    </Grid>
+</UserControl>

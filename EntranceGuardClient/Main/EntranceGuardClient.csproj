@@ -1,0 +1,114 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>EntranceGuardClient</AssemblyName>
+    <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <ApplicationIcon>entrance-client.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Images\bg-login.png" />
+    <None Remove="Images\device-reader.jpg" />
+    <None Remove="Images\login-bg.svg" />
+    <None Remove="Images\login-box-bg.png" />
+    <None Remove="Images\logo-white.png" />
+    <None Remove="Images\logo.jpg" />
+    <None Remove="Images\logo.png" />
+    <None Remove="Images\media-empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="entrance-client.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.920" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="SharpVectors" Version="1.8.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MaterialDesignExtensions\MaterialDesignExtensions.csproj" />
+    <ProjectReference Include="..\..\AJWPFAdmin.Core\AJWPFAdmin.Core.csproj" />
+    <ProjectReference Include="..\..\Modules\Common\AJWPFAdmin.Modules.Common\AJWPFAdmin.Modules.Common.csproj" />
+    <ProjectReference Include="..\Modules\AJWPFAdmin.Modules.Main\AJWPFAdmin.Modules.Main.csproj" />
+    <ProjectReference Include="..\Modules\AJWPFAdmin.Modules.SideMenu\AJWPFAdmin.Modules.SideMenu.csproj" />
+    <ProjectReference Include="..\..\Services\AJWPFAdmin.Services\AJWPFAdmin.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bg-login.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\device-reader.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\login-box-bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\logo.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\logo-white.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\media-empty.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\LoginWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\avcodec-57.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\avformat-57.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\avutil-54.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\avutil-55.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\libcurl.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\libwinpthread-1.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\swscale-3.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\user.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\VzAudioDataPlayer.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\VzDrawsLib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\VzLPRSDK.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\VzPlayer2.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareSDKS\VzClientSDK\VzStreamClient.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="HardwareSDKS\VzClientSDK\" />
+  </ItemGroup>
+</Project>
