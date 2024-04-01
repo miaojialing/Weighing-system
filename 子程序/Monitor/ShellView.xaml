@@ -1,0 +1,94 @@
+﻿<Window x:Class="Monitor.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:s="https://github.com/canton7/Stylet"
+        Title="监控摄像头" WindowStyle="None" SizeToContent="WidthAndHeight" ResizeMode="CanResizeWithGrip"  MouseDown="DockPanel_MouseDown"
+        MouseLeftButtonDown="Window_DragMove" Topmost="{Binding WindowTopmost}" MinWidth="310" MinHeight="620"  Width="310" Height="620" SizeChanged="Window_SizeChanged" Closed="Window_Closed" >
+    <Grid x:Name="topPanel" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition  Width="89*"/>
+            <ColumnDefinition Width="66*"/>
+            <!--<ColumnDefinition /> -->
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0"  Margin="5,5,5,5" Grid.ColumnSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="15*"/>
+                    <ColumnDefinition Width="15*"/>
+                    <ColumnDefinition Width="15*"/>
+                    <ColumnDefinition Width="15*"/>
+                    <ColumnDefinition Width="20*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"  Height="25"  Command="{s:Action SetTop}"  Margin="7,4" BorderBrush="#FFFFFFFF" Background="#FFFFFFFF" BorderThickness="0">
+                    <Image  HorizontalAlignment="Left" VerticalAlignment="Top" Source="{Binding FixedPic}">
+                        <Image.OpacityMask>
+                            <ImageBrush ImageSource="{Binding FixedPic}" Stretch="None"/>
+                        </Image.OpacityMask>
+                    </Image>
+                </Button>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Image   Height="25"  Source="{Binding Camera1Pic}" />
+                    <Label Content="{Binding Camera1Tips}" FontSize="14" Foreground="Red" VerticalAlignment="Bottom"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Image   Height="25"  Source="{Binding Camera2Pic}" />
+                    <Label Content="{Binding Camera2Tips}" FontSize="14" Foreground="Red" VerticalAlignment="Bottom"/>
+                </StackPanel>
+                <StackPanel Grid.Column="3" Orientation="Horizontal">
+                    <Image   Height="25"  Source="{Binding Camera3Pic}" />
+                    <Label Content="{Binding Camera3Tips}" FontSize="14" Foreground="Red" VerticalAlignment="Bottom"/>
+                </StackPanel>
+                <StackPanel Grid.Column="4" Orientation="Horizontal">
+                    <Image   Height="25"  Source="{Binding Camera4Pic}" />
+                    <Label Content="{Binding Camera4Tips}" FontSize="14" Foreground="Red" VerticalAlignment="Bottom"/>
+                </StackPanel>
+                <Button Grid.Column="5"  Height="25"  Command="{s:Action Preview}"  Margin="7,4" BorderBrush="#FFFFFFFF" Background="#FFFFFFFF" BorderThickness="0">
+                    <Image  HorizontalAlignment="Left" VerticalAlignment="Top"  Source="/Resources/play.png">
+                        <Image.OpacityMask>
+                            <ImageBrush ImageSource="/Resources/play.png" Stretch="None"/>
+                        </Image.OpacityMask>
+                    </Image>
+                </Button>
+            </Grid>
+        </DockPanel>
+        <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid ShowGridLines="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{Binding Row1High}"/>
+                    <RowDefinition Height="{Binding Row2High}"/>
+                    <RowDefinition Height="{Binding Row3High}"/>
+                    <RowDefinition Height="{Binding Row4High}"/>
+                </Grid.RowDefinitions>
+
+                <WindowsFormsHost Grid.Row="0"  Margin="5,0,5,5"
+                          Visibility="{Binding ShowCamera01, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    <wf:PictureBox x:Name="RealPlayWnd1" />
+                </WindowsFormsHost>
+
+
+                <WindowsFormsHost Grid.Row="1"  Margin="5,0,5,5"
+                          Visibility="{Binding ShowCamera02, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    <wf:PictureBox x:Name="RealPlayWnd2" />
+                </WindowsFormsHost>
+
+                <WindowsFormsHost  Grid.Row="2"  Margin="5,0,5,5" 
+                          Visibility="{Binding ShowCamera03, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    <wf:PictureBox x:Name="RealPlayWnd3" />
+                </WindowsFormsHost>
+
+                <WindowsFormsHost   Grid.Row="3"  Margin="5,0,5,5"
+                          Visibility="{Binding ShowCamera04, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    <wf:PictureBox x:Name="RealPlayWnd4" />
+                </WindowsFormsHost>
+            </Grid>
+        </DockPanel>
+
+    </Grid>
+</Window>
