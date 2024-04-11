@@ -1,0 +1,208 @@
+﻿<UserControl
+    x:Class="AJWPFAdmin.Core.Components.AJFilePicker.Views.AJFilePicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:AJWPFAdmin.Core.Converters;assembly=AJWPFAdmin.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AJWPFAdmin.Core.Components.AJFilePicker.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:vm="clr-namespace:AJWPFAdmin.Core.Components.AJFilePicker.ViewModels"
+    d:Background="White"
+    d:DesignHeight="100"
+    d:DesignWidth="100"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+
+        <Style x:Key="borderDashArray" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Rectangle
+                                        Width="100"
+                                        Height="100"
+                                        Stroke="{DynamicResource PrimaryHueDarkBrush}"
+                                        StrokeDashArray="6 4"
+                                        StrokeThickness="1" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Rectangle
+                                        Width="100"
+                                        Height="100"
+                                        Stroke="{DynamicResource PrimaryHueMidForegroundBrush}"
+                                        StrokeDashArray="6 4"
+                                        StrokeThickness="1" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="uploadBtn" TargetType="Button">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Style="{StaticResource borderDashArray}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <md:PackIcon
+                                        Width="24"
+                                        Height="24"
+                                        HorizontalAlignment="Center"
+                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                        Kind="Plus" />
+                                    <TextBlock
+                                        Margin="4"
+                                        Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                                        Text="{TemplateBinding Content}"
+                                        TextAlignment="Center" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="imageBtn" TargetType="Button">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Style="{StaticResource borderDashArray}">
+                            <ContentPresenter />
+                        </Border>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <WrapPanel Orientation="Horizontal">
+        <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:AJFilePicker}}, Path=Images}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="10*" />
+                        </Grid.RowDefinitions>
+                        <Button
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Width="{Binding DisplayWidth}"
+                            Height="{Binding DisplayHeight}"
+                            Margin="8"
+                            Click="Btn_PreView_Click"
+                            CommandParameter="{Binding}"
+                            Cursor="Hand"
+                            Style="{StaticResource imageBtn}">
+                            <Image
+                                Width="{Binding DisplayWidth}"
+                                Height="{Binding DisplayHeight}"
+                                Source="{Binding Image}"
+                                Stretch="UniformToFill" />
+
+                        </Button>
+                        <Border
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Background="#80000000"
+                            Visibility="{Binding Loading}">
+                            <ProgressBar
+                                Width="32"
+                                Height="32"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                IsIndeterminate="True"
+                                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                Value="0" />
+                        </Border>
+                        <Button
+                            Width="32"
+                            Height="32"
+                            Margin="0,-18,14,0"
+                            HorizontalAlignment="Right"
+                            Click="Btn_Delete_Click"
+                            CommandParameter="{Binding}"
+                            Opacity="0.8"
+                            Style="{DynamicResource MaterialDesignFloatingActionMiniLightButton}"
+                            Visibility="{Binding CanDelete}">
+                            <md:PackIcon
+                                Width="22"
+                                Height="22"
+                                Kind="Delete" />
+                        </Button>
+                    </Grid>
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Border
+            Name="Border_ItemBorder"
+            Margin="8"
+            BorderThickness="1">
+            <Border.BorderBrush>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Rectangle
+                            Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:AJFilePicker}}, Path=Options.Width}"
+                            Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:AJFilePicker}}, Path=Options.Height}"
+                            Stroke="{DynamicResource PrimaryHueDarkBrush}"
+                            StrokeDashArray="6 4"
+                            StrokeThickness="1" />
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Border.BorderBrush>
+            <md:PackIcon
+                Width="32"
+                Height="32"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{StaticResource AJGrey}"
+                Kind="ImageBroken" />
+        </Border>
+        <Button
+            x:Name="Btn_Upload"
+            Margin="4"
+            Click="Btn_Upload_Click"
+            Cursor="Hand"
+            Style="{StaticResource uploadBtn}" />
+    </WrapPanel>
+
+</UserControl>

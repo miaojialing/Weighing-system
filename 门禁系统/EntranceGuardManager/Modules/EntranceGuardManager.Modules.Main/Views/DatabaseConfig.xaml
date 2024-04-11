@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="EntranceGuardManager.Modules.Main.Views.DatabaseConfig"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EntranceGuardManager.Modules.Main.Views"
+             mc:Ignorable="d" 
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:converter="clr-namespace:AJWPFAdmin.Core.Converters;assembly=AJWPFAdmin.Core"
+             xmlns:ajtable="clr-namespace:AJWPFAdmin.Core.Components.AJTable.Views;assembly=AJWPFAdmin.Core"
+             xmlns:bhv="http://schemas.microsoft.com/xaml/behaviors"
+             Language="zh-CN"
+             d:DesignHeight="450" d:DesignWidth="800" d:Background="White">
+    <UserControl.Resources>
+        <converter:BooleanInvertConverter x:Key="BooleanInvert"/>
+        <DataTemplate x:Key="TableOperatioin">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Style="{DynamicResource MaterialDesignIconButton}" ToolTip="删除" Margin="4 0"
+                Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteCmd}" CommandParameter="{Binding}">
+                    <md:PackIcon Kind="DeleteOutline"></md:PackIcon>
+                </Button>
+                <Button Style="{DynamicResource MaterialDesignIconButton}" ToolTip="还原" Margin="4 0"
+Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.RestoreCmd}" CommandParameter="{Binding}">
+                    <md:PackIcon Kind="DatabaseArrowLeftOutline"></md:PackIcon>
+                </Button>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <md:DialogHost Identifier="backupProgress" IsOpen="{Binding ManualBackupProgress.Loading}">
+        <md:DialogHost.DialogContent>
+            <Grid Margin="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <md:PackIcon Kind="{Binding ManualBackupProgress.Icon}" Foreground="{DynamicResource PrimaryHueMidBrush}"
+                             Height="64" Width="64"></md:PackIcon>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8" MinWidth="240">
+                    <TextBlock Margin="0 8" FontSize="16" Text="{Binding ManualBackupProgress.Text}"></TextBlock>
+                    <ProgressBar Height="12" Value="{Binding ManualBackupProgress.Progress}"/>
+                </StackPanel>
+            </Grid>
+        </md:DialogHost.DialogContent>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <TabControl HorizontalContentAlignment="Center">
+                <TabItem Header="链接配置" >
+                    <Grid VerticalAlignment="Center">
+                        <StackPanel HorizontalAlignment="Center" MinWidth="480">
+                            <TextBox md:HintAssist.Hint="服务器地址" Style="{DynamicResource MaterialDesignOutlinedTextBox}" Text="{Binding DataSource}" md:HintAssist.HelperText="本地地址请使用 . 或 localhost 或 127.0.0.1"  Margin="8 18" FontSize="18"></TextBox>
+                            <TextBox md:HintAssist.Hint="登录账号" Style="{DynamicResource MaterialDesignOutlinedTextBox}" Text="{Binding UId}"  Margin="8 18" FontSize="18"></TextBox>
+                            <PasswordBox Margin="8 18" FontSize="18" md:HintAssist.Hint="登录密码" Style="{DynamicResource MaterialDesignOutlinedPasswordBox}"
+         md:PasswordBoxAssist.Password="{Binding Password}"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="备份管理">
+
+                    <Grid Margin="12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="12*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <md:TimePicker 
+                                           Style="{DynamicResource MaterialDesignOutlinedTimePicker}" 
+                                           Is24Hours="True" 
+                                           md:HintAssist.Hint="每天备份时间点" 
+                                           FontSize="18" 
+                                           
+                                           SelectedTime="{Binding AutoBackupDate,UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox md:HintAssist.Hint="备份位置" Grid.Column="1"
+                             Style="{DynamicResource MaterialDesignOutlinedTextBox}"  
+                             IsReadOnly="True"  
+                             Margin="12 0" Text="{Binding AutoBackupPath}"
+                             FontSize="18"></TextBox>
+                                <Button Grid.Column="2" Margin="32 0" Height="48"
+                                    Command="{Binding OpenFileDialogCmd}">更改位置</Button>
+                            </Grid>
+                            <TextBlock FontWeight="Bold" 
+                                   TextAlignment="Center"
+                                   Margin="8"
+                                   Foreground="{DynamicResource AJRed}">请保持程序运行,否则无法实现自动备份</TextBlock>
+                        </StackPanel>
+                        <DockPanel Grid.Row="1">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                <Button Margin="8 0" Command="{Binding ManualBackupCmd}">手动备份</Button>
+                                <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource AJRed}">
+                                操作手动备份/还原时,请确保没有任何程序在录入/修改记录,否则会造成数据不一致
+                                </TextBlock>
+                            </StackPanel>
+                            <ajtable:AJTable  Rows="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.BackupFiles,Mode=TwoWay}"
+Columns="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Columns}"
+    Loading="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.BackupTableloading}"
+    Pagination="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Pagination}"
+FormConfig="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.FormConfig}">
+                                <bhv:Interaction.Triggers>
+                                    <bhv:EventTrigger EventName="PageChanged">
+                                        <prism:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.PageChangedCmd}"></prism:InvokeCommandAction>
+                                    </bhv:EventTrigger>
+                                    <bhv:EventTrigger EventName="SearchClick">
+                                        <prism:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.SearchCmd}" TriggerParameterPath="IsRefresh"></prism:InvokeCommandAction>
+                                    </bhv:EventTrigger>
+                                    <bhv:EventTrigger EventName="LoadingRow">
+                                        <prism:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.LoadingRowCmd}" TriggerParameterPath="Row"></prism:InvokeCommandAction>
+                                    </bhv:EventTrigger>
+                                </bhv:Interaction.Triggers>
+                            </ajtable:AJTable>
+                        </DockPanel>
+
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <StackPanel Grid.Row="1">
+                <TextBlock TextAlignment="Center" Foreground="{DynamicResource AJRed}">注意：更改此处配置需要重启程序才能生效</TextBlock>
+                <Button Margin="8 4"  MaxWidth="200"  Command="{Binding SaveCmd}"
+md:ButtonProgressAssist.IsIndeterminate="{Binding Loading}"
+md:ButtonProgressAssist.IsIndicatorVisible="True"
+md:ButtonProgressAssist.Value="-1"
+IsEnabled="{Binding Loading,Converter={StaticResource BooleanInvert}}">保存</Button>
+            </StackPanel>
+
+        </Grid>
+    </md:DialogHost>
+
+</UserControl>

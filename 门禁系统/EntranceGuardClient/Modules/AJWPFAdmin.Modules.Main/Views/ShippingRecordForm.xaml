@@ -1,0 +1,191 @@
+﻿<UserControl x:Class="AJWPFAdmin.Modules.Main.Views.ShippingRecordForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AJWPFAdmin.Modules.Main.Views"
+             mc:Ignorable="d" 
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:converter="clr-namespace:AJWPFAdmin.Core.Converters;assembly=AJWPFAdmin.Core"
+             xmlns:components="clr-namespace:AJWPFAdmin.Core.Components.AJFilePicker.Views;assembly=AJWPFAdmin.Core"
+             xmlns:bhv="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             Language="zh-CN"
+             d:DesignHeight="450" d:DesignWidth="800" d:Background="White">
+    <UserControl.Resources>
+        <converter:BooleanInvertConverter x:Key="BooleanInvert"/>
+    </UserControl.Resources>
+    
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="mde:MaterialWindow">
+            <Setter Property="Title" Value="{Binding DialogTitle}"/>
+            <Setter Property="SizeToContent" Value="Manual"/>
+            <Setter Property="MaxWidth" Value="768"/>
+        </Style>
+    </prism:Dialog.WindowStyle>
+    <md:DialogHost  IsOpen="{Binding Preparing}" OverlayBackground="Transparent" ClipToBounds="False">
+        <md:DialogHost.DialogContent>
+            <Border Margin="16">
+                <ProgressBar Height="32" Width="32" HorizontalAlignment="Center" IsIndeterminate="True"
+                             Style="{StaticResource MaterialDesignCircularProgressBar}"
+                             Value="0" md:ElevationAssist.Elevation="Dp2"/>
+            </Border>
+        </md:DialogHost.DialogContent>
+        <Grid Margin="16" Name="Grid_Form" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer md:ScrollViewerAssist.IsAutoHideEnabled="True"
+                          HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox md:HintAssist.Hint="船号" 
+                                 Margin="8 18" 
+                                 FontSize="18"
+                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                                 Text="{Binding BoatNo}"></TextBox>
+                        <ComboBox ItemsSource="{Binding MaterialCategoryOptions}"
+                                  Grid.Column="1"
+                                  Margin="8 18" FontSize="18"
+                                  md:HintAssist.Hint="物料种类" 
+                                  md:ComboBoxAssist.ShowSelectedItem="True"
+                                  md:TextFieldAssist.HasClearButton="True"
+                                  IsEditable="True"
+                                  Text="{Binding MaterialCategory,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                  Style="{DynamicResource MaterialDesignOutlinedComboBox}"
+                                  SelectedValue="{Binding MaterialCategory,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                        </ComboBox>
+                        <ComboBox ItemsSource="{Binding MaterialNameOptions}"
+                                  Grid.Column="2"
+                                  Margin="8 18" FontSize="18"
+                                  md:HintAssist.Hint="物料名称" 
+                                  md:ComboBoxAssist.ShowSelectedItem="True"
+                                  md:TextFieldAssist.HasClearButton="True"
+                                  IsEditable="True"
+                                  Text="{Binding MaterialName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                  Style="{DynamicResource MaterialDesignOutlinedComboBox}"
+                                  SelectedValue="{Binding MaterialName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                        </ComboBox>
+                    </Grid>
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox md:HintAssist.Hint="船运单净重" Margin="8 18" FontSize="18"
+                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                                 Text="{Binding OrderNetWeight}"></TextBox>
+                        <TextBox md:HintAssist.Hint="检斤" Grid.Column="1" Margin="8 18" FontSize="18"
+                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                                 Text="{Binding JianJin}"></TextBox>
+                        <TextBox md:HintAssist.Hint="汽车衡净重" Grid.Column="2" Margin="8 18" FontSize="18"
+                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                                 Text="{Binding CarNetWeight}"></TextBox>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox md:HintAssist.Hint="发货单位" Margin="8 18" FontSize="18"
+                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                                 Text="{Binding SenderName}"></TextBox>
+                        <TextBox md:HintAssist.Hint="收货单位" Grid.Column="1" Margin="8 18" FontSize="18"
+                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                                 Text="{Binding ReceiverName}"></TextBox>
+                        <TextBox md:HintAssist.Hint="装/卸货地点泊位" Grid.Column="2" Margin="8 18" FontSize="18"
+                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                                 Text="{Binding Berth}"></TextBox>
+                    </Grid>
+
+
+                    <StackPanel Orientation="Horizontal">
+                        <Grid Margin="8 18" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <DatePicker Style="{DynamicResource MaterialDesignOutlinedDatePicker}"
+                                        md:TextFieldAssist.HasClearButton="True"
+                                        md:HintAssist.Hint="到港日期"  FontSize="18"
+                                        SelectedDate="{Binding ArriveDate,UpdateSourceTrigger=PropertyChanged}"/>
+                            <md:TimePicker Margin="4 0"
+                                           Grid.Column="1"
+                                           Style="{DynamicResource MaterialDesignOutlinedTimePicker}" 
+                                           Is24Hours="True"
+                                           md:TextFieldAssist.HasClearButton="True"
+                                           md:HintAssist.Hint="时间" FontSize="18"
+                                           SelectedTime="{Binding ArriveDate,UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <Grid Margin="8 18" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <DatePicker Style="{DynamicResource MaterialDesignOutlinedDatePicker}"
+                                        md:TextFieldAssist.HasClearButton="True"
+                                        md:HintAssist.Hint="装/卸货日期" FontSize="18"
+                                        SelectedDate="{Binding ShipStartDate,UpdateSourceTrigger=PropertyChanged}"/>
+                            <md:TimePicker Margin="4 0"
+                                           Grid.Column="1"
+                                           Style="{DynamicResource MaterialDesignOutlinedTimePicker}" 
+                                           Is24Hours="True"
+                                           md:TextFieldAssist.HasClearButton="True"
+                                           md:HintAssist.Hint="时间" FontSize="18"
+                                           SelectedTime="{Binding ShipStartDate,UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+
+                        <Grid Margin="8 18" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <DatePicker Style="{DynamicResource MaterialDesignOutlinedDatePicker}"
+                                        md:TextFieldAssist.HasClearButton="True"
+                                        md:HintAssist.Hint="结束日期" FontSize="18"
+                                        SelectedDate="{Binding ShipEndDate,UpdateSourceTrigger=PropertyChanged}"/>
+                            <md:TimePicker Margin="4 0"
+                                           Grid.Column="1"
+                                           Style="{DynamicResource MaterialDesignOutlinedTimePicker}" 
+                                           Is24Hours="True"
+                                           md:TextFieldAssist.HasClearButton="True"
+                                           md:HintAssist.Hint="时间" FontSize="18"
+                                           SelectedTime="{Binding ShipEndDate,UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+            <lvc:CartesianChart Visibility="{Binding Chart.Visibility}"
+                Series="{Binding Chart.Series}" 
+                XAxes="{Binding Chart.XAxes}"
+                YAxes="{Binding Chart.YAxes}"
+                Title="{Binding Chart.Title}"
+                Grid.Row="1">
+            </lvc:CartesianChart>
+            <Button Command="{Binding SaveCmd}"
+                    Grid.Row="2" MaxWidth="240"
+                    md:ButtonProgressAssist.IsIndeterminate="{Binding Loading}"
+                    md:ButtonProgressAssist.IsIndicatorVisible="True"
+                    md:ButtonProgressAssist.Value="-1"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    IsEnabled="{Binding Loading,Converter={StaticResource BooleanInvert}}" 
+                    Content="保 存"></Button>
+        </Grid>
+    </md:DialogHost>
+    
+
+</UserControl>

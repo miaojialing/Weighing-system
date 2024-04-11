@@ -1,0 +1,254 @@
+﻿<UserControl
+    x:Class="EntranceGuardManager.Modules.Main.Views.CarForm"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:components="clr-namespace:AJWPFAdmin.Core.Components.AJFilePicker.Views;assembly=AJWPFAdmin.Core"
+    xmlns:converter="clr-namespace:AJWPFAdmin.Core.Converters;assembly=AJWPFAdmin.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:EntranceGuardManager.Modules.Main.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+    xmlns:prism="http://prismlibrary.com/"
+    d:Background="White"
+    d:DesignHeight="800"
+    d:DesignWidth="700"
+    Language="zh-CN"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:BooleanInvertConverter x:Key="BooleanInvert" />
+        <converter:BooleanMapConverter
+            x:Key="toggleText"
+            FalseValue="不允许"
+            TrueValue="允许" />
+        <local:CarTypeVisibilityConvert x:Key="cartTypeToVisibility" />
+    </UserControl.Resources>
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="mde:MaterialWindow">
+            <Setter Property="Title" Value="{Binding DialogTitle}" />
+            <Setter Property="Top" Value="120" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+    <md:DialogHost Identifier="dialogWindow">
+        <Grid Margin="8,16">
+            <StackPanel MinWidth="640">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox
+                        Margin="8,18"
+                        md:ComboBoxAssist.ShowSelectedItem="True"
+                        md:HintAssist.Hint="类型"
+                        DisplayMemberPath="Label"
+                        FontSize="16"
+                        IsEditable="True"
+                        ItemsSource="{Binding TypeOptions}"
+                        SelectedValue="{Binding TypeId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Style="{DynamicResource MaterialDesignOutlinedComboBox}" />
+
+                    <Grid Grid.Column="1" Margin="8,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="4*" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox
+                            Margin="4,0"
+                            md:ComboBoxAssist.ShowSelectedItem="True"
+                            FontSize="16"
+                            IsEditable="True"
+                            ItemsSource="{Binding CarPreFixOptions}"
+                            SelectedValue="{Binding CarPrefix, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            Style="{DynamicResource MaterialDesignOutlinedComboBox}" />
+
+                        <TextBox
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            md:HintAssist.Hint="车牌号"
+                            FontSize="16"
+                            Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                            Text="{Binding CarNo}" />
+                    </Grid>
+
+                </Grid>
+
+                <Grid Margin="8,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <DatePicker
+                            md:HintAssist.Hint="有效日期"
+                            md:TextFieldAssist.HasClearButton="True"
+                            FontSize="16"
+                            SelectedDate="{Binding ExpireDate, UpdateSourceTrigger=PropertyChanged}"
+                            Style="{DynamicResource MaterialDesignOutlinedDatePicker}" />
+                        <md:TimePicker
+                            Grid.Column="1"
+                            Margin="4,0"
+                            md:HintAssist.Hint="时间"
+                            md:TextFieldAssist.HasClearButton="True"
+                            FontSize="16"
+                            Is24Hours="True"
+                            SelectedTime="{Binding ExpireDate, UpdateSourceTrigger=PropertyChanged}"
+                            Style="{DynamicResource MaterialDesignOutlinedTimePicker}" />
+                    </Grid>
+                    <TextBox
+                        Grid.Column="1"
+                        Margin="8,16"
+                        md:HintAssist.Hint="卡号"
+                        FontSize="16"
+                        Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                        Text="{Binding IDCardNo}" />
+
+                </Grid>
+
+
+                <StackPanel Visibility="{Binding TypeId, Converter={StaticResource cartTypeToVisibility}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            VerticalAlignment="Center"
+                            BorderBrush="{StaticResource AJGrey}"
+                            BorderThickness="0,0,0,1" />
+                        <StackPanel
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Margin="8,0"
+                                FontSize="16"
+                                Foreground="{StaticResource AJGrey}"
+                                Text="台账信息" />
+                        </StackPanel>
+
+                        <Border
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            BorderBrush="{StaticResource AJGrey}"
+                            BorderThickness="0,0,0,1" />
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            Margin="8,16"
+                            md:HintAssist.Hint="发动机号"
+                            FontSize="16"
+                            MaxLength="50"
+                            Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                            Text="{Binding EngineNo}" />
+
+                        <TextBox
+                            Grid.Column="1"
+                            Margin="8,16"
+                            md:HintAssist.Hint="VIN"
+                            FontSize="16"
+                            MaxLength="50"
+                            Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                            Text="{Binding VIN}" />
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            Margin="8,16"
+                            md:HintAssist.Hint="排放阶段"
+                            FontSize="16"
+                            MaxLength="50"
+                            Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                            Text="{Binding PaiFangJieDuan}" />
+
+                        <Grid Grid.Column="1" Margin="8,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
+                            <DatePicker
+                                md:HintAssist.Hint="注册日期"
+                                md:TextFieldAssist.HasClearButton="True"
+                                FontSize="16"
+                                SelectedDate="{Binding RegDate, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{DynamicResource MaterialDesignOutlinedDatePicker}" />
+                            <md:TimePicker
+                                Grid.Column="1"
+                                Margin="4,0"
+                                md:HintAssist.Hint="时间"
+                                md:TextFieldAssist.HasClearButton="True"
+                                FontSize="16"
+                                Is24Hours="True"
+                                SelectedTime="{Binding RegDate, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{DynamicResource MaterialDesignOutlinedTimePicker}" />
+                        </Grid>
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            Margin="8,16"
+                            md:HintAssist.Hint="货物"
+                            FontSize="16"
+                            MaxLength="50"
+                            Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                            Text="{Binding MaterialName}" />
+
+                        <TextBox
+                            Grid.Column="1"
+                            Margin="8,16"
+                            md:HintAssist.Hint="重量(KG)"
+                            FontSize="16"
+                            Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                            Text="{Binding CarNetWeight}" />
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel HorizontalAlignment="Center">
+                            <components:AJFilePicker Images="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.VehicleLicense, Mode=TwoWay}" />
+                            <TextBlock TextAlignment="Center">行驶证</TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                            <components:AJFilePicker Images="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Attachments, Mode=TwoWay}" />
+                            <TextBlock TextAlignment="Center">随车清单</TextBlock>
+                        </StackPanel>
+                    </Grid>
+
+
+                </StackPanel>
+
+                <Button
+                    Margin="0,16"
+                    md:ButtonProgressAssist.IsIndeterminate="{Binding Loading}"
+                    md:ButtonProgressAssist.IsIndicatorVisible="True"
+                    md:ButtonProgressAssist.Value="-1"
+                    Command="{Binding SaveCmd}"
+                    Content="保 存"
+                    IsEnabled="{Binding Loading, Converter={StaticResource BooleanInvert}}"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+            </StackPanel>
+        </Grid>
+    </md:DialogHost>
+</UserControl>

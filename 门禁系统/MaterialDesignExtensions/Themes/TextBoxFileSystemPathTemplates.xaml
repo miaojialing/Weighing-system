@@ -1,0 +1,156 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:MaterialDesignExtensions.Controls"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mdConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+        <ResourceDictionary>
+            <mdConverters:BrushRoundConverter x:Key="brushRoundConverter" />
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="showButtonDialogStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="md:RippleAssist.Feedback" Value="{DynamicResource MaterialDesignFlatButtonRipple}" />
+        <Setter Property="md:RippleAssist.ClipToBounds" Value="True" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Margin" Value="0,0,0,4" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <md:Ripple
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        Focusable="False"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                <Setter Property="Opacity" Value="0.5" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                <Setter Property="Opacity" Value="1" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="textBoxFileSystemPathStyle" TargetType="{x:Type controls:TextBoxFileSystemPath}">
+        <Setter Property="TextBoxStyle" Value="{StaticResource MaterialDesignTextBox}" />
+    </Style>
+
+    <Style BasedOn="{StaticResource textBoxFileSystemPathStyle}" TargetType="{x:Type controls:TextBoxOpenDirectory}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:TextBoxOpenDirectory}">
+                    <Grid ToolTip="{TemplateBinding Directory}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            Grid.ColumnSpan="2"
+                            Padding="0,0,24,0"
+                            VerticalAlignment="Center"
+                            IsEnabled="{TemplateBinding IsEnabled}"
+                            Style="{TemplateBinding TextBoxStyle}"
+                            Text="{Binding Path=Directory, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type controls:TextBoxOpenDirectory}}}" />
+                        <Button
+                            x:Name="showButtonDialog"
+                            Grid.Column="1"
+                            IsEnabled="{TemplateBinding IsEnabled}"
+                            Style="{StaticResource showButtonDialogStyle}">
+                            <md:PackIcon
+                                Width="18"
+                                Height="18"
+                                Kind="Folder" />
+                        </Button>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource textBoxFileSystemPathStyle}" TargetType="{x:Type controls:TextBoxOpenFile}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:TextBoxOpenFile}">
+                    <Grid ToolTip="{TemplateBinding File}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            Grid.ColumnSpan="2"
+                            Padding="0,0,24,0"
+                            VerticalAlignment="Center"
+                            IsEnabled="{TemplateBinding IsEnabled}"
+                            Style="{TemplateBinding TextBoxStyle}"
+                            Text="{Binding Path=File, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type controls:TextBoxOpenFile}}}" />
+                        <Button
+                            x:Name="showButtonDialog"
+                            Grid.Column="1"
+                            IsEnabled="{TemplateBinding IsEnabled}"
+                            Style="{StaticResource showButtonDialogStyle}">
+                            <md:PackIcon
+                                Width="18"
+                                Height="18"
+                                Kind="Folder" />
+                        </Button>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource textBoxFileSystemPathStyle}" TargetType="{x:Type controls:TextBoxSaveFile}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:TextBoxSaveFile}">
+                    <Grid ToolTip="{TemplateBinding File}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            Grid.ColumnSpan="2"
+                            Padding="0,0,24,0"
+                            VerticalAlignment="Center"
+                            IsEnabled="{TemplateBinding IsEnabled}"
+                            Style="{TemplateBinding TextBoxStyle}"
+                            Text="{Binding Path=File, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type controls:TextBoxSaveFile}}}" />
+                        <Button
+                            x:Name="showButtonDialog"
+                            Grid.Column="1"
+                            IsEnabled="{TemplateBinding IsEnabled}"
+                            Style="{StaticResource showButtonDialogStyle}">
+                            <md:PackIcon
+                                Width="18"
+                                Height="18"
+                                Kind="Folder" />
+                        </Button>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,77 @@
+﻿<UserControl
+    x:Class="EntranceGuardManager.Modules.Main.Views.WarehousePassageRecordList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ajtable="clr-namespace:AJWPFAdmin.Core.Components.AJTable.Views;assembly=AJWPFAdmin.Core"
+    xmlns:bhv="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:converters="clr-namespace:AJWPFAdmin.Core.Converters;assembly=AJWPFAdmin.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="EntranceGuardManager.Modules.Main.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:prism="http://prismlibrary.com/"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Language="zh-CN"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="CarCountBtn">
+            <Button
+                Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowRecordsModal}"
+                CommandParameter="{Binding}"
+                Content="{Binding Count}"
+                Style="{DynamicResource MaterialDesignFlatLightButton}"
+                ToolTip="查看详情" />
+        </DataTemplate>
+        <DataTemplate x:Key="TableOperatioin">
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <Button
+                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.EditCmd}"
+                    CommandParameter="{Binding}"
+                    Style="{DynamicResource MaterialDesignIconButton}"
+                    ToolTip="编辑">
+                    <md:PackIcon Kind="FileEditOutline" />
+                </Button>
+                <Button
+                    Margin="4,0"
+                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteCmd}"
+                    CommandParameter="{Binding}"
+                    Style="{DynamicResource MaterialDesignIconButton}"
+                    ToolTip="删除">
+                    <md:PackIcon Kind="DeleteOutline" />
+                </Button>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <md:DialogHost Identifier="DHMain">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="10*" />
+            </Grid.RowDefinitions>
+            <!--<StackPanel Orientation="Horizontal" Margin="8 0">
+        <Button Command="{Binding EditCmd}">新增</Button>
+    </StackPanel>-->
+            <ajtable:AJTable
+                Grid.Row="1"
+                Columns="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Columns}"
+                FormConfig="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.FormConfig}"
+                Loading="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Loading}"
+                Pagination="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Pagination}"
+                Rows="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Rows, Mode=TwoWay}">
+                <bhv:Interaction.Triggers>
+                    <bhv:EventTrigger EventName="PageChanged">
+                        <prism:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.PageChangedCmd}" />
+                    </bhv:EventTrigger>
+                    <bhv:EventTrigger EventName="SearchClick">
+                        <prism:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.SearchCmd}" TriggerParameterPath="IsRefresh" />
+                    </bhv:EventTrigger>
+                    <bhv:EventTrigger EventName="LoadingRow">
+                        <prism:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.LoadingRowCmd}" TriggerParameterPath="Row" />
+                    </bhv:EventTrigger>
+                </bhv:Interaction.Triggers>
+            </ajtable:AJTable>
+        </Grid>
+    </md:DialogHost>
+
+</UserControl>
